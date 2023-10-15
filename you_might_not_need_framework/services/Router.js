@@ -1,3 +1,5 @@
+import { loadData } from "./Menu.js"
+
 const Router = {
     init: () => {
         document.querySelectorAll("a.navlink").forEach((a) => {
@@ -23,6 +25,7 @@ const Router = {
         switch (route) {
             case "/":
                 pageElement = document.createElement("menu-page")
+                loadData()
                 break
 
             case "/order":
