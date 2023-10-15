@@ -35,7 +35,7 @@ const Router = {
                     pageElement = document.createElement("details-page")
                     pageElement.textContent = "Details"
                     const paramId = route.substring(route.lastIndexOf("-") + 1)
-                    pageElement.id = paramId
+                    pageElement.dataset.productId = paramId
                 }
                 break
         }
