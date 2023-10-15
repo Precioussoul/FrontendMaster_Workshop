@@ -1,23 +1,26 @@
 const Router = {
     init: () => {
         document.querySelectorAll("a.navlink").forEach((a) => {
-            a.addEventListener("click", (event) => {
-                event.preventDefault()
-                const url = event.target.getAttribute("href")
-                Router.go(url)
+                a.addEventListener("click", (event) => {
+                    event.preventDefault()
+                    const url = event.target.getAttribute("href")
+                    Router.go(url)
+                })
             })
+            // Event handlers for the URL changes
+        window.addEventListener("popstate", (event) => {
+            Router.go(event.state.route, false)
         })
-
         Router.go(location.pathname)
     },
-    go: (path, addToHistory = true) => {
-        console.log(`Going to ${path}`)
+    go: (route, addToHistory = true) => {
+        console.log(`Going to ${route}`)
 
         if (addToHistory) {
-            history.pushState({ path }, null, path)
+            history.pushState({ route }, null, route)
         }
         let pageElement = null
-        switch (path) {
+        switch (route) {
             case "/":
                 pageElement = document.createElement("h1")
                 pageElement.textContent = "Menu"
@@ -30,13 +33,21 @@ const Router = {
                 break
 
             default:
-                pageElement = document.createElement("h1")
-                pageElement.textContent = "Page cannot be found"
+                if (route.startsWith("/product/")) {
+                    pageElement = document.createElement("h1")
+                    pageElement.textContent = "Details"
+                    const paramId = route.substring(route.lastIndexOf("/") + 1)
+                    pageElement.id = paramId
+                }
                 break
         }
-        const main = document.querySelector("main")
-        main.innerHTML = ""
-        main.appendChild(pageElement)
+        if (pageElement) {
+            const main = document.querySelector("main")
+            main.innerHTML = ""
+            main.appendChild(pageElement)
+            window.scrollX = 0
+            window.scrollY = 0
+        }
     },
 }
 
