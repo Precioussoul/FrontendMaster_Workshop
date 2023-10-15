@@ -14,8 +14,29 @@ const Router = {
         console.log(`Going to ${path}`)
 
         if (addToHistory) {
-            history.pushState({ route: path }, null, path)
+            history.pushState({ path }, null, path)
         }
+        let pageElement = null
+        switch (path) {
+            case "/":
+                pageElement = document.createElement("h1")
+                pageElement.textContent = "Menu"
+                break
+
+            case "/order":
+                pageElement = document.createElement("h1")
+                pageElement.textContent = "Your Order"
+
+                break
+
+            default:
+                pageElement = document.createElement("h1")
+                pageElement.textContent = "Page cannot be found"
+                break
+        }
+        const main = document.querySelector("main")
+        main.innerHTML = ""
+        main.appendChild(pageElement)
     },
 }
 
