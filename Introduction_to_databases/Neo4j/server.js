@@ -1,38 +1,40 @@
 const express = require("express")
 const neo4j = require("neo4j-driver")
-// connection string for neo4j
-const connectionString = "bolt://localhost7687"
 
-const driver = neo4j.driver(connectionString)
+const CONNECTION_STRING = "bolt://localhost:7687"
+
+const driver = neo4j.driver(CONNECTION_STRING)
 
 async function init() {
   const app = express()
-
-  app.use(express.static("/static"))
+  app.use(express.static("./static"))
 
   app.get("/get", async (req, res) => {
     const session = driver.session()
-
-    const results = await session.run(
+    const result = await session.run(
       `
-        MATCH path = shortestPath( 
-            (First:Person {name:$person1})-[*]-(Second:Person {name:$person2})
+        MATCH path = shortestPath(
+            (First:Person {name: $person1 })-[*]-(Second:Person {name: $person2 })
         )
-        UNWIND nodes(path) AS node
-        RETURN coalesce(node.name, node.title) AS text;
-        `,
-      {person1: req.query.person1, person2: req.query.person2}
+        UNWIND nodes(path) as node
+        RETURN coalesce(node.name, node.title) as text;
+    `,
+      {
+        person1: req.query.person1,
+        person2: req.query.person2,
+      }
     )
 
     res
       .json({
         status: "ok",
-        path: results.records.map((record) => record.get("text")),
+        path: result.records.map((record) => record.get("text")),
       })
       .end()
 
     await session.close()
   })
-  const PORT = 3000
-  app.listen(PORT, () => console.log("server running on port" + PORT))
+
+  app.listen(process.env.PORT || 3000)
 }
+init()
