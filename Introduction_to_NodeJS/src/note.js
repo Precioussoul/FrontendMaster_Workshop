@@ -11,7 +11,7 @@ export const newNote = async (note, tags) => {
   return newNote
 }
 
-export const getAllNote = async () => {
+export const getAllNotes = async () => {
   const {notes} = await getDB()
   return notes
 }
