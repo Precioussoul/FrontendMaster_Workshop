@@ -1,4 +1,1 @@
-export { other }
-from "./other.js"
-export { count, somethingElse }
-from "./util"
+export * from "./util.js"
