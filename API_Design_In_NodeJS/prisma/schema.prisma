@@ -11,8 +11,27 @@ datasource db {
 }
 
 model User {
-id String @id @default(uuid())
-createdAt DateTime @default(now())
-username String @unique
-password String 
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  username  String    @unique
+  password  String
+  product   Product[]
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  name        String   @db.VarChar(255)
+  belongsToId String
+  belongsTo   User     @relation(fields: [belongsToId], references: [id], onDelete: Cascade)
+}
+
+
+model Update {
+  id String @id @default(uuid()) 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  title String
+  body String
+
 }
