@@ -2,12 +2,13 @@ import yargs from "yargs"
 import {hideBin} from "yargs/helpers"
 import {
   findNotes,
-  getAllNote,
+  getAllNotes,
   newNote,
   removeAllNotes,
   removeNote,
 } from "./note.js"
 import {listNotes} from "../utils/util.js"
+import {start} from "./server.js"
 
 yargs(hideBin(process.argv))
   .command(
@@ -35,7 +36,7 @@ yargs(hideBin(process.argv))
     "get all notes",
     () => {},
     async (argv) => {
-      const notes = await getAllNote()
+      const notes = await getAllNotes()
       listNotes(notes)
     }
   )
@@ -78,7 +79,10 @@ yargs(hideBin(process.argv))
         type: "number",
       })
     },
-    async (argv) => {}
+    async (argv) => {
+      const notes = await getAllNotes()
+      start(notes, 4000)
+    }
   )
   .command(
     "clean",
