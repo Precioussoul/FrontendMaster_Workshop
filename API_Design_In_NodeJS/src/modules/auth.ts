@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken"
 import * as dotenv from "dotenv"
 import bcrypt from "bcrypt"
 import {NextFunction, Request, Response} from "express"
+import {User} from "@prisma/client"
 dotenv.config()
 
 export const comparePasswords = (password: string, hash: any) => {
@@ -12,7 +13,7 @@ export const hashPasswords = (password: string) => {
   return bcrypt.hash(password, 5)
 }
 
-export const createJWT = (user: {id: string; username: string}) => {
+export const createJWT = (user: User) => {
   const token = jwt.sign(
     {id: user.id, username: user.username},
     process.env.JWT_SECRET as string
