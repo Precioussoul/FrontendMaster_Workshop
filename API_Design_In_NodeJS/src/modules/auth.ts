@@ -21,7 +21,7 @@ export const createJWT = (user: User) => {
 
   return token
 }
-
+// middleware
 export const protect = (req: Request, res: Response, next: NextFunction) => {
   const bearer = req.headers.authorization
 
