@@ -57,7 +57,13 @@ router.put(
   () => {}
 )
 
-router.post("/updatepoint", () => {})
+router.post(
+  "/updatepoint",
+  body("name").optional().isString(),
+  body("description").optional().isString(),
+  body("updateId").exists().isString(),
+  () => {}
+)
 router.delete("/updatepoint/:id", () => {})
 
 export default router
