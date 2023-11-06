@@ -85,7 +85,27 @@ export const updateUpdate = async (req: Request, res: Response) => {
 }
 
 // delete a product
-export const deleteProduct = async (req: Request, res: Response) => {
+export const deleteUpdate = async (req: Request, res: Response) => {
+  const products = await prisma.product.findMany({
+    where: {
+      // @ts-ignore
+      belongsToId: req.user.id,
+    },
+    include: {
+      updates: true,
+    },
+  })
+
+  const updates = products.reduce((allUpdates: any, product) => {
+    return [...allUpdates, ...product.updates]
+  }, [])
+
+  const match = updates.find((update: any) => update.id === req.params.id)
+
+  if (!match) {
+    res.json({message: "No update found"})
+  }
+
   const deleted = await prisma.update.delete({
     where: {
       id: req.params.id,
