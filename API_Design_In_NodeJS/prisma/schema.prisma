@@ -25,7 +25,8 @@ model Product {
   belongsToId String
   belongsTo   User     @relation(fields: [belongsToId], references: [id], onDelete: Cascade)
   updates Update[]
-}
+  @@unique([id, belongsToId])
+ }
 
 enum UPDATE_STATUS {
   IN_PROGRESS
