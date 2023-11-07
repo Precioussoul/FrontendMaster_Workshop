@@ -1,4 +1,4 @@
-import express, {NextFunction} from "express"
+import express, {NextFunction, Request, Response} from "express"
 import router from "./router"
 import morgan from "morgan"
 import {protect} from "./modules/auth"
@@ -22,11 +22,17 @@ app.use(express.urlencoded({extended: true}))
 app.use(customLogger("custom logger"))
 
 app.get("/", (req, res) => {
-  res.json({msg: "hello world"})
+  throw new Error("hello")
 })
 
 app.use("/api", protect, router)
 app.post("/user", createNewUser)
 app.post("/signin", signIn)
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.log(err)
+
+  res.json({message: "Oops there was an error "})
+})
 
 export default app
