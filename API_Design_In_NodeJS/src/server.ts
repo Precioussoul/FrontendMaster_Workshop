@@ -3,6 +3,7 @@ import router from "./router"
 import morgan from "morgan"
 import {protect} from "./modules/auth"
 import {createNewUser, signIn} from "./handlers/user"
+import {errorHandler} from "./handlers/error"
 
 const app = express()
 
@@ -31,10 +32,6 @@ app.use("/api", protect, router)
 app.post("/user", createNewUser)
 app.post("/signin", signIn)
 
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.log(err)
-
-  res.json({message: "Oops there was an error "})
-})
+app.use(errorHandler)
 
 export default app
