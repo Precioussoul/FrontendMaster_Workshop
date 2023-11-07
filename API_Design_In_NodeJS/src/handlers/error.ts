@@ -1,7 +1,7 @@
-import {ErrorRequestHandler, NextFunction, Request, Response} from "express"
+import {NextFunction, Request, Response} from "express"
 
-export const errorHandler: ErrorRequestHandler = (
-  err,
+export const errorHandler = (
+  err: any,
   req: Request,
   res: Response,
   next: NextFunction

@@ -22,11 +22,7 @@ app.use(express.urlencoded({extended: true}))
 // @ts-ignore
 app.use(customLogger("custom logger"))
 
-app.get("/", (req, res, next) => {
-  setTimeout(() => {
-    next(new Error("hello"))
-  }, 200)
-})
+app.get("/", (req, res) => {})
 
 app.use("/api", protect, router)
 app.post("/user", createNewUser)

@@ -1,4 +1,4 @@
-import {Request, Response} from "express"
+import {NextFunction, Request, Response} from "express"
 import prisma from "../db"
 
 // GET ALL
@@ -33,16 +33,24 @@ export const getOneProduct = async (req: Request, res: Response) => {
 
 // Create a new product
 
-export const createProduct = async (req: Request, res: Response) => {
-  const product = await prisma.product.create({
-    data: {
-      name: req.body.name,
-      // @ts-ignore
-      belongsToId: req.user.id,
-    },
-  })
+export const createProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const product = await prisma.product.create({
+      data: {
+        name: req.body.name,
+        // @ts-ignore
+        belongsToId: req.user.id,
+      },
+    })
 
-  res.json({data: product})
+    res.json({data: product})
+  } catch (e) {
+    next(e)
+  }
 }
 
 // Update a product

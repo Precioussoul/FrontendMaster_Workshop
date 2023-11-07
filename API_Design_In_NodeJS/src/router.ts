@@ -15,6 +15,7 @@ import {
   getUpdates,
   updateUpdate,
 } from "./handlers/update"
+import {errorHandler} from "./handlers/error"
 
 const router = Router()
 
@@ -55,6 +56,8 @@ router.post(
   createUpdate
 )
 router.delete("/update/:id", deleteUpdate)
+// ERROR HANDLER in sub routes
+router.use(errorHandler)
 
 /**
  Update points
